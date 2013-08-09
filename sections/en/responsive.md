@@ -1,18 +1,18 @@
 # Responsive Best Practices
 
-Responsive web development is still very much in flux. This section of the document is best suited to act as a primer for your projects. Techniques outlined here may very well have changed mere weeks after writing. Use this as a set of guidelines, not as doctrine. Still don't have any idea what we're talking about? Then read [the article](http://alistapart.com/article/responsive-web-design) that started it all.
+This section of the document assumes that you have a general understanding of the concepts of responsive design. It is best suited to act as a primer for your projects. If you need more of an introductory background on responsive development, read [Ethan Marcotte's article](http://alistapart.com/article/responsive-web-design) that started it all.
 
-This document assumes a general understanding of the concept of responsive design.
-
+Responsive web development is still very much in flux. Techniques outlined here may have changed since this document was originally  written. Use this as a set of guidelines, not as doctrine.
 
 # General Techniques
 
 ## Mobile First
 
-Serve assets and code to mobile devices first and then scale up from there. Serve the bare minimum needed to make the resulting content accessible. Similar to progressive enhancement, scale up from and then scale up from there as browser capabilities allow. Content should be viewable by as many devices as possible, including devices that don't support Javascript.
+[Luke Wrobliski's Mobile First post](http://www.lukew.com/ff/entry.asp?933) 
+Serve assets and code to mobile devices first and then scale up from there. Serve the bare minimum needed to make the resulting content accessible. Similar to progressive enhancement, scale up from and then scale up from there as browser capabilities allow. Content should be viewable by as many devices as possible, including devices that don't support Javascript. If your content is important enough to be viewed on desktop browsers then it should be important enough to be accessible on mobile devices.
 
 ## CSS
-Start with the most basic, global styles. As the browser or device width increases, serve more styles using min-width breakpoints. Avoid using device-specific breakpoints, popular devices will come and go. Instead, let the content and design dictate breakpoints between "mobile", "tablet", or "desktop." 
+Start with the most basic, global styles. As the browser or device width increases, serve more styles using min-width breakpoints. Avoid using device-specific breakpoints as popular devices will come and go. Instead, let the content and design dictate breakpoints between "mobile", "tablet", or "desktop." 
 
 ## Speed is a Feature
 Developing with a mobile-first philosophy in mind will help speed up the performance of your project. But consider every HTTP request. When serving CSS, combine CSS files so that as few as possible are served. That might mean that a mobile device may download Desktop-specific CSS, but those styles will not be parsed once the browser doesn't meet a specific media query.
@@ -22,11 +22,11 @@ Also, advanced CSS3 techniques, like box-shadows, rounded corners, and gradients
 # Media Queries
 
 **A Note about IE8 and Media Queries**
-Many [great minds](https://github.com/h5bp/html5-boilerplate/issues/865#issuecomment-3025844) in this field consider that IE8 users should be delivered the desktop experience by default. This can be done, but as outlined by [this article](http://zomigi.com/blog/essential-considerations-for-crafting-quality-media-queries/) it means that modern browsers will be need extra HTTP requests for stylesheets. If you must support IE8, I recommend using pollyfills for the techniques listed below.
+Many [great minds](https://github.com/h5bp/html5-boilerplate/issues/865#issuecomment-3025844) in this field consider that IE8 users should be delivered the desktop experience by default. This can be done, but as outlined by [this article](http://zomigi.com/blog/essential-considerations-for-crafting-quality-media-queries/) it means that modern browsers will need extra HTTP requests for stylesheets. If you must support IE8, I recommend using polyfills for the techniques listed below.
 
 Media Queries are supported by all modern browsers. To enable support for media queries for browsers that don't natively support it, use [Respond.js](https://github.com/scottjehl/Respond). Be sure to read the documentation for known bugs and tips.
 
-Use [Modernizr](http://modernizr.com/) to test for Browser capabilities. Instead of testing for *every* feature that Modernizr can test for, be sure to use a [custom build](http://modernizr.com/download) so that you only test the features you need. Copy the URL when including the JSin your project so that any additional tests in your Modernizr build can be added easily.
+Use [Modernizr](http://modernizr.com/) to test for Browser capabilities. Instead of testing for *every* feature that Modernizr can test for, be sure to use a [custom build](http://modernizr.com/download) so that you only test the features you need. Copy the URL when including the Modernizr library in your project so that any additional tests in your Modernizr build can be added easily.
 
 The Modernizr.mq() function can tell you what breakpoint the browser is in in your Javascript code. Unfortunately, this doesn't work in IE8. Use [this fork of MatchMedia()](https://github.com/benschwarz/matchMedia.js/blob/IE7-8/matchMedia.js) to media query testing in JS if IE8 support is needed. If you *do* use the fork of MatchMedia(), be sure to remove the 
 
@@ -35,7 +35,7 @@ The Modernizr.mq() function can tell you what breakpoint the browser is in in yo
 
 ### Fluid Images
 
-If your design calls for it, consider making your images automatically resize to the width of their container. This is achieivable through a simple snippet of CSS:
+If your design calls for it, consider making your images automatically resize to the width of their container. This is achievable through a simple snippet of CSS:
 ```css
 img{
   width:100%;
@@ -89,7 +89,9 @@ What's important to realize is that the state of responsive images are changing 
 
 ## Icons
 
-We advise against using images for icons. We tried it for MSG, but soon found that it wasn't worth the effort when developing techniques to handle retina displays. Instead consider [rolling your own icon font](https://github.com/blog/1135-the-making-of-octicons). This does have design limitations, but they scale very well depending on screen pixel density.
+We advise against using images for icons. We tried it for MSG, but soon found that it wasn't worth the effort when developing techniques to handle retina displays. Instead consider using [Grunticon](https://github.com/filamentgroup/grunticon) to create a set of SVG icons with an accompanying image sprite-based fallback. *"Scalable Vector Graphics (SVGs) ... offer all the advantages of icon-based vectors, and also have the added benefit of supporting multiple colors, gradients, opacity and all kinds of other visual goodness that icon fonts can’t match."* 
+
+For smaller projects, take a look at [Grumpicon](), which is a GUI wrapped version of Grunticon. Also see the [Grumpicon workflow](http://filamentgroup.com/lab/grumpicon_workflow/).
 
 
 # Other Notes
@@ -97,7 +99,7 @@ We advise against using images for icons. We tried it for MSG, but soon found th
 ## Yepnope
 Yepnope is a great tool to test for feature support on your user's browser. It's the default loader for Modernizr, but it does have a few bugs. Most notably, Android 2.3 support is flaky. We tested a number of versions and ended up with a custom build that enabled Android 2.3 support as well as some of the most recent features. See [this gist](https://gist.github.com/nring/5636358) for details. 
 
-Don't realy too heavily on Yepnope as it adds an extra HTTP request for each test. If you have a way to fix this problem, great!
+Don't rely too heavily on Yepnope as it adds an extra HTTP request for each test. If you have a way to fix this problem, great!
 
 ## Ress
 
@@ -106,6 +108,7 @@ Don't realy too heavily on Yepnope as it adds an extra HTTP request for each tes
 
 ## How the hell do I stay on top of this stuff?!
 
+* [Responsive Resources](http://bradfrost.github.io/this-is-responsive/resources.html)
 * [A List Apart](alistapart.com)
 * [Smashing Magazine](smashingmagazine.com)
 * [Brad Frost](http://twitter.com/brad_frost)
